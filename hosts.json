@@ -1,17 +1,11 @@
 [
-{ 
-  "name": "tpcstage",
+{
+  "name": "qa3",
   "components" : [
   {
     "type": "TgzComponent",
     "hostString": "ombu@d2:34165",
-    "sitePath": "/mnt/main/tpc.stage.ombuweb.com"
-  },
-  {
-    "type": "MysqlComponent",
-    "hostString": "ombu@d2:34165",
-    "dbName": "tpc",
-    "dbUser": "root"
+    "sitePath": "/mnt/main/qa/qa3"
   }
   ]
 }

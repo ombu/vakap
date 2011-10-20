@@ -12,7 +12,7 @@ def main():
     desc = "Run a command on a set of hosts"
     parser = OptionParser(description=desc, usage=usage)
     parser.add_option("-f", "--file", dest="filename",
-                      help="hosts manifest JSON file")
+                      help="Hosts manifest JSON file")
     
     (options, args) = parser.parse_args()
     
@@ -22,6 +22,7 @@ def main():
     sites = parse_sites(options.filename if options.filename else 'hosts.json')
     for site in sites:
         print '+ Processing site %s' % site["name"]
+        env.site = site["name"]
         for component in site["components"]:
             c = Component.factory(component)
             for command in args:
@@ -76,9 +77,17 @@ def get_ref(path):
 
 @task
 def backup_files(path):
-    with cd(path): 
-        run('uptime')
-
+    from time import gmtime, strftime
+    s3bucket = 'backup.ombuweb.com'
+    with cd(path):
+        print(path)
+        date= strftime("%Y.%m.%d", gmtime())
+        tgz = 'files-%s.tgz' % date
+        run('tar czhf %s/%s files' % ('/tmp', tgz))
+        run("""s3cmd --add-header=x-amz-server-side-encryption:AES256 \
+                --human-readable-sizes put {tmp}/{tgz} s3://{bucket}/{site}/{tgz}"""
+                .format(tmp='/tmp',tgz=tgz,bucket=s3bucket,site=env.site))
+        run('rm %s', tgz)
 @task
 def backup_db(dbname):
     run('which mysql')
