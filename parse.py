@@ -6,6 +6,8 @@ from fabric.api import *
 from pprint import pprint
 
 env.key_filename = ['/Users/axolx/.ssh/axolx-base']
+env.s3bucket = 'backup.ombuweb.com'
+env.gpg_key = 'A01D2B0D'
 
 def main():
     usage = "usage: %prog command"
@@ -26,16 +28,7 @@ def main():
         for component in site["components"]:
             c = Component.factory(component)
             for command in args:
-                # try: 
                 getattr(c, command)()
-                # Catching exceptions here was problematic because it was
-                # catching excetions happing deeper in the stack.
-                # what to do?
-                # except AttributeError: 
-                #     print("Command %s not found on %s" % (command, c))
-                # except:
-                #     print "Unexpected error:", sys.exc_info()[0]
-                #     raise
 
 def parse_sites(jsonFile):
     try:
@@ -78,16 +71,18 @@ def get_ref(path):
 @task
 def backup_files(path):
     from time import gmtime, strftime
-    s3bucket = 'backup.ombuweb.com'
     with cd(path):
-        print(path)
         date= strftime("%Y.%m.%d", gmtime())
-        tgz = 'files-%s.tgz' % date
-        run('tar czhf %s/%s files' % ('/tmp', tgz))
-        run("""s3cmd --add-header=x-amz-server-side-encryption:AES256 \
-                --human-readable-sizes put {tmp}/{tgz} s3://{bucket}/{site}/{tgz}"""
-                .format(tmp='/tmp',tgz=tgz,bucket=s3bucket,site=env.site))
-        run('rm %s', tgz)
+        gpg = 'files-%s.tgz.gpg' % date
+        with settings(warn_only=True):
+            run('rm /tmp/vakap-*')
+        run("""tar czh current | gpg --encrypt --recipient {key} > {tmp}/vakap-{gpg}"""
+                .format( tmp='/tmp', gpg=gpg, key=env.gpg_key))
+        run("""s3cmd --acl-public --human-readable-sizes put  \
+                {tmp}/vakap-{gpg} s3://{bucket}/{site}/{gpg}"""
+                .format(tmp='/tmp',gpg=gpg,bucket=env.s3bucket,site=env.site))
+        with settings(warn_only=True):
+            run('rm /tmp/vakap-*')
 @task
 def backup_db(dbname):
     run('which mysql')
