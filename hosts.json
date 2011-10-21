@@ -1,11 +1,17 @@
 [
 {
-  "name": "qa3",
+  "name": "vv-stage",
   "components" : [
   {
+    "type": "MysqlComponent",
+    "host_string": "ombu@d2:34165",
+    "db_name": "veritableveg",
+    "db_user": "backup"
+  },
+  {
     "type": "TgzComponent",
-    "hostString": "ombu@d2:34165",
-    "sitePath": "/mnt/main/qa/qa3"
+    "host_string": "ombu@d2:34165",
+    "site_path": "/mnt/main/qa/qa3"
   }
   ]
 }
