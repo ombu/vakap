@@ -21,6 +21,7 @@ purpose rather than be a general purpose tool.
 - rotate backups (e.g. delete older files from S3)
 - list sites
 - perform an http request on sites
+- Get revision deployed for a site and deployment metadata 
 
 ## Components
 
@@ -41,7 +42,7 @@ Tar & gzip a directory (follow symlinks). Arguments:
 
 - _db\_name_: The database name
 
-## Requirements
+## Dependencies
 - Client: `python` and [Fabric](http://docs.fabfile.org)
 - Hosts: `s3cmd`, `gnupg` with a [trusted public
   key](http://www.gnupg.org/gph/en/manual.html#AEN346) for encryption
@@ -75,7 +76,7 @@ Tar & gzip a directory (follow symlinks). Arguments:
 
 ## License
 
-Copyright (c) 2011 Martin Rio axolx@fastmai.fm, except where otherwise
+Copyright (c) 2011 OMBU martin@ombuweb.com, except where otherwise
 noted.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
