@@ -16,7 +16,9 @@ def main():
 
     (options, args) = parser.parse_args()
     if len(args) == 0:
-        sys.exit("No command supplied")
+        print "No command supplied"
+        print "Available commands: backup"
+        sys.exit(0)
 
     for site in parse_settings(options.settings):
         print '+ Processing site %s' % site["name"]

@@ -17,7 +17,7 @@ class Component(object):
 
 def s3_upload(src, dst):
     """ Upload a path to S3 """
-    print "  - Uploading to S3: %s" % dst
+    print "  - Uploading: %s" % dst
     with hide('running', 'stdout'):
         try:
             run("s3cmd --acl-public --human-readable-sizes put %s %s" % (src, dst))
