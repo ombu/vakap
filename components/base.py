@@ -23,3 +23,8 @@ def s3_upload(src, dst):
             run("s3cmd --acl-public --human-readable-sizes put %s %s" % (src, dst))
         finally:
             run('rm %s' % src)
+
+def s3_file_exists(s3_path):
+    """ Whether a file exists on S3 """
+    with hide('running', 'stdout'):
+        return bool(run("s3cmd ls %s" % s3_path))
