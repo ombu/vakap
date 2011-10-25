@@ -1,0 +1,25 @@
+{
+  "settings": {
+    "default_ssh_key": ["/Users/axolx/.ssh/axolx-base"],
+    "backup_s3_bucket": "backup.ombuweb.com",
+    "gpg_key": "A01D2B0D"
+  },
+  "hosts": [
+  {
+    "name": "vv-stage",
+    "components" : [
+    {
+      "type": "MysqlComponent",
+      "host_string": "ombu@d2:34165",
+      "db_name": "veritableveg",
+      "db_user": "backup"
+    },
+    {
+      "type": "TgzComponent",
+      "host_string": "ombu@d2:34165",
+      "site_path": "/mnt/main/qa/qa3"
+    }
+    ]
+  }
+  ]
+}
