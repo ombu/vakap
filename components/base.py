@@ -27,4 +27,4 @@ def s3_upload(src, dst):
 def s3_file_exists(s3_path):
     """ Whether a file exists on S3 """
     with hide('running', 'stdout'):
-        return bool(run("s3cmd ls %s" % s3_path))
+        return bool(s3_path in run("s3cmd ls %s" % s3_path))

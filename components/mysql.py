@@ -14,7 +14,6 @@ class MysqlComponent(Component):
 
 @task
 def backup_mysql(site_name, dbname, dbuser):
-    print "  - Dumping and encrypting database: %s" % dbname
     date = strftime("%Y.%m.%d", gmtime())
     gpg_file = 'sql-%s.gz.gpg' % date
     local_file = "%s/vakap-%s" % ('/tmp', gpg_file)
@@ -23,6 +22,7 @@ def backup_mysql(site_name, dbname, dbuser):
         print "  - File exists: %s. Skipping." % s3_dest
         return
     else:
+        print "  - Dumping and encrypting database: %s" % dbname
         with hide('running', 'stdout'):
             run("""mysqldump -u {dbuser} --add-drop-table {dbname} \
                 | gzip | gpg --encrypt --recipient {key} > {local_file}"""
