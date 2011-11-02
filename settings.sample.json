@@ -1,0 +1,31 @@
+{
+  "settings": {
+    "default_ssh_key": ["/Users/me/.ssh/my-key"],
+    "backup_s3_bucket": "my-backup-bucket",
+    "gpg_key": "MY_GPG_KEY_ID"
+  },
+  "hosts": [
+    {
+      "name": "my-sweet-app",
+      "components" : [
+        {
+          "type": "TgzComponent",
+          "host_string": "me@example.com:22",
+          "site_path": "/path/to/directory"
+        },
+        {
+          "type": "MysqlComponent",
+          "host_string": "me@example.com:22",
+          "db_name": "MY_DB_NAME",
+          "db_user": "MY_DB_USER"
+        },
+        {
+          "type": "PostgresComponent",
+          "host_string": "me@example.com:22",
+          "db_name": "MY_DB_NAME",
+          "db_user": "MY_DB_USER"
+        }
+      ]
+    }
+  ]
+}
