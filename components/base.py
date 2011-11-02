@@ -11,6 +11,7 @@ class Component(object):
     def factory(site_name, component):
         from mysql import MysqlComponent
         from tgz import TgzComponent
+        from postgres import PostgresComponent
         return eval(component["type"])(site_name, component)
 
 """ Base Utilities """
