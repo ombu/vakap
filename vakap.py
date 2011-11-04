@@ -54,8 +54,10 @@ def parse_settings(options):
     try:
         config = json.load(f)
         env.key_filename = config['settings']['default_ssh_key']
-        env.s3_bucket = config['settings']['backup_s3_bucket']
         env.gpg_key = config['settings']['gpg_key']
+        env.s3_bucket = config['settings']['s3_bucket']
+        env.s3_access_key = config['settings']['s3_access_key']
+        env.s3_secret = config['settings']['s3_secret']
 
         # if filter option was passed, use it to filter site list
         if options.filter:
