@@ -30,24 +30,24 @@ def main():
     (options, args) = parser.parse_args()
     if len(args) == 0:
         print "No command supplied"
-        print "Available commands: backup"
+        print "Available commands: list, backup"
         sys.exit(0)
 
     sites = parse_settings(options)
 
+    # Try to run the command globablly
     for command in args:
-        try:
-            getattr(GlobalCommand, command)(sites)
-        except AttributeError:
-            pass
-        for site in sites:
-            for component in site["components"]:
-                c = Component.factory(site["name"], component)
-                try:
-                    print '+ Processing site %s' % site["name"]
-                    getattr(c, command)()
-                except AttributeError:
-                    pass
+        try: getattr(GlobalCommand, command)(sites)
+        except AttributeError: pass
+
+    # Try to run the command on site components
+    for site in sites:
+        print '+ Processing site %s' % site["name"]
+        for component in site["components"]:
+            c = Component.factory(site["name"], component)
+            for command in args:
+                try: getattr(c, command)()
+                except AttributeError: pass
 
 def parse_settings(options):
     f = open(options.settings)
@@ -63,7 +63,6 @@ def parse_settings(options):
             hosts = filter(lambda x: x['name'] in filter_sites, config['hosts'])
         else:
             hosts = config['hosts']
-
         return hosts
     finally:
         f.close()
