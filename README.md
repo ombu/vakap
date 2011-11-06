@@ -1,27 +1,27 @@
 vakap
 =====
 
-I build vakap to me manage the sites hosted by OMBU on Amazon AWS. It is meant
-to help manage sites, not servers. Initially it was going to be exclusively a
-backup script, but I quickly realized it could easily provide other
-functionality necessary to manage sites. My goal is to make it useful to one
-purpose rather than be a general purpose tool.
+**This is a work in progress, subject to major refactoring. Use at your own
+risk. If you find it useful, I'd love to hear about it, and get feedback.**
+
+I built *vakap* to help manage the sites hosted by OMBU. It's meant for managing
+sites, not servers. The original scope was to handle backups, but it's
+structured to allow any operation on a site, such as cron.
 
 ## What it does
-
 - Allows to run a command on a list of sites (e.g. back them up)
-- Backs up to Amazon S3
-- Encrypts content with `gnupg` before sending it to S3
+- Stores backups in Amazon S3
+- Encrypts files with `gnupg` before sending to S3
 
 ## Commands
 ### Implemented
-- backup
+- list: list managed sites
+- backup: backup sites
 
 ### Planned
 - rotate backups (e.g. delete older files from S3)
-- list sites
-- perform an http request on sites
-- Get revision deployed for a site and deployment metadata 
+- run maintenance scripts on sites
+- report site metadata, such as currenly deployed VCS revision 
 
 ## Components
 
@@ -37,10 +37,16 @@ Backup a MySQL database. Arguments:
 - _db\_user_: The database user name. This user must have sufficient privilege in
   the host to run `mysqldump` on this database without requiring a password
 
+### PostgresComponent
+Same functionality as MysqlComponent for PostgreSQL databases.
+
 ### TgzComponent
 Tar & gzip a directory (follow symlinks). Arguments:
 
 - _db\_name_: The database name
+
+### DuplicityComponent
+Same functionality as MysqlComponent for PostgreSQL databases.
 
 ## Dependencies
 - Client: `python` and [Fabric](http://docs.fabfile.org)
@@ -48,31 +54,11 @@ Tar & gzip a directory (follow symlinks). Arguments:
   key](http://www.gnupg.org/gph/en/manual.html#AEN346) for encryption
 
 ## Setup
-- Provide a hosts file (vakap will look for hosts.json). Hosts file should look
-  like:
-
-        [
-          {
-            "name": "vv-stage",
-            "components" : [
-              {
-                "type": "MysqlComponent",
-                "host_string": "ombu@d2:34165",
-                "db_name": "veritableveg",
-                "db_user": "backup"
-              },
-              {
-                "type": "TgzComponent",
-                "host_string": "ombu@d2:34165",
-                "site_path": "/mnt/main/qa/qa3"
-              }
-            ]
-          }
-        ]
-
-- All hosts must have [s3cmd](http://s3tools.org/s3cmd) installed and
+- Provide a settings file (vakap will look for settings.json). See
+  `settings.sample.json` for an exmaple .
+- Site hosts must have [s3cmd](http://s3tools.org/s3cmd) installed and
   configured.
-- Provide an Amazon S3 bucket that the host's s3cmd can write to.
+- Site hosts must have the gpg public key in their keyring
 
 ## License
 

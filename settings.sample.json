@@ -24,6 +24,11 @@
           "host_string": "me@example.com:22",
           "db_name": "MY_DB_NAME",
           "db_user": "MY_DB_USER"
+        },
+        {
+          "type":"DuplicityComponent",
+          "host_string": "me@example.com:22",
+          "site_path": "/path/to/directory"
         }
       ]
     }
