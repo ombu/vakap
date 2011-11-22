@@ -19,5 +19,7 @@ def backup_files(site_name, path):
     print "  - Running Duplicity on directory: %s" % path
     with hide('running', 'stdout'):
         run("AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s duplicity \
+                -v2 --volsize=256 --asynchronous-upload \
+                --exclude %s/logs \
                 --encrypt-key %s --full-if-older-than 30D %s %s" %
-            (env.s3_access_key, env.s3_secret, env.gpg_key, path, s3_dest))
+            (env.s3_access_key, env.s3_secret, path, env.gpg_key, path, s3_dest))
