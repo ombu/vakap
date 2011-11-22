@@ -24,7 +24,7 @@ def main():
     parser.add_option("-s", "--settings", dest="settings",
             help="Hosts manifest JSON file [default: %default]",
             default="settings.json")
-    parser.add_option("-f", "--filter", dest="filter",
+    parser.add_option("-i", "--include", dest="include",
             help="Comma-separated list of sites to process [default: all sites]")
     parser.add_option("-x", "--exclude", dest="exclude",
             help="Comma-separated list of sites to exclude")
@@ -61,11 +61,11 @@ def parse_settings(options):
         env.s3_access_key = config['settings']['s3_access_key']
         env.s3_secret = config['settings']['s3_secret']
 
-        # filter and exclude options
-        if options.filter:
-            filter_sites = [x.strip() for x in options.filter.split(',')]
-            hosts = filter(lambda x: x['name'] in filter_sites, config['hosts'])
-        if options.exclude:
+        # include and exclude options
+        if options.include:
+            include_sites = [x.strip() for x in options.include.split(',')]
+            hosts = filter(lambda x: x['name'] in include_sites, config['hosts'])
+        elif options.exclude:
             exclude_sites = [x.strip() for x in options.exclude.split(',')]
             hosts = filter(lambda x: x['name'] not in exclude_sites, config['hosts'])
         else:
