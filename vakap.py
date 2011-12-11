@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+import os
 import sys
 import json
 from optparse import OptionParser
@@ -52,7 +53,7 @@ def main():
                 except AttributeError: pass
 
 def parse_settings(options):
-    f = open(options.settings)
+    f = open(os.path.dirname(os.path.realpath(__file__)) + '/' + options.settings)
     try:
         config = json.load(f)
         env.key_filename = config['settings']['default_ssh_key']
