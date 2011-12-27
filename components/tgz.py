@@ -1,5 +1,6 @@
 from fabric.decorators import task
 from fabric.api import settings, cd, hide, run, env
+from fabric.contrib.files import exists as file_exists
 
 from base import Component, s3_upload, s3_file_exists, s3_list
 
@@ -30,6 +31,10 @@ def backup_files(site_name, path):
         else:
             print "  - Taring and gziping directory: %s" % path
             with hide('running', 'stdout'):
-                run("tar czh current | gpg --encrypt --recipient %s > %s" %
-                    (env.gpg_key, local_file))
+                if file_exists('current'):
+                    run("tar czh current | gpg --encrypt --recipient %s > %s" %
+                        (env.gpg_key, local_file))
+                else:
+                    run("tar czh . | gpg --encrypt --recipient %s > %s" %
+                        (env.gpg_key, local_file))
             s3_upload(local_file, s3_dest)
