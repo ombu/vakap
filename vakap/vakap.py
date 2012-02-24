@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 import os
 import sys
 import json
@@ -53,7 +52,7 @@ def main():
                 except AttributeError: pass
 
 def parse_settings(options):
-    f = open(os.path.dirname(os.path.realpath(__file__)) + '/' + options.settings)
+    f = open('./' + options.settings)
     try:
         config = json.load(f)
         env.key_filename = config['settings']['default_ssh_key']
@@ -74,6 +73,3 @@ def parse_settings(options):
         return hosts
     finally:
         f.close()
-
-if __name__ == '__main__':
-    sys.exit(main())

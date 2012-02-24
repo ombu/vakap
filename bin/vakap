@@ -1,0 +1,3 @@
+#!/usr/bin/env python
+from vakap import vakap
+vakap.main()
