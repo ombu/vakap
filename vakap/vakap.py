@@ -5,6 +5,10 @@ from optparse import OptionParser
 from fabric.api import env
 from components.base import Component
 import pprint
+import ssh
+
+# https://github.com/fabric/fabric/issues/312
+ssh.io_sleep = 0.1
 
 class GlobalCommand(object):
     """ Global Commands """
