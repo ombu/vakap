@@ -10,7 +10,7 @@ class TgzComponent(Component):
 
     def backup(self):
         with settings(host_string=self.host_string):
-            backup_files(self.site_name, self.site_path)
+            backup_files(self.site_name, self.site_path, self.tmpdir)
 
     def check(self):
         s3_path = "s3://%s/%s/" % (env.s3_bucket, self.site_name)
@@ -18,18 +18,18 @@ class TgzComponent(Component):
             print run(s3_list(s3_path))
 
 @task
-def backup_files(site_name, path):
+def backup_files(site_name, path, tmpdir='/tmp'):
     from time import gmtime, strftime
     with cd(path):
         date = strftime("%Y.%m.%d", gmtime())
         gpg_file = 'files-%s.tgz.gpg' % date
-        local_file = "%s/vakap-%s" % ('/tmp', gpg_file)
+        local_file = "%s/vakap-%s" % (tmpdir, gpg_file)
         s3_dest = "s3://%s/%s/%s" % (env.s3_bucket, site_name, gpg_file)
         if s3_file_exists(s3_dest):
             print "  - File exists: %s. Skipping" % s3_dest
             return
         else:
-            print "  - Taring and gziping directory: %s" % path
+            print "  - Taring and gziping directory: %s => %s" % (path, tmpdir)
             with hide('running', 'stdout'):
                 if file_exists('current'):
                     run("tar czh current | gpg --encrypt --recipient %s > %s" %
