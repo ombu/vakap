@@ -10,7 +10,10 @@ class TgzComponent(Component):
 
     def backup(self):
         with settings(host_string=self.host_string):
-            backup_files(self.site_name, self.site_path, self.tmpdir)
+            try:
+                backup_files(self.site_name, self.site_path, self.tmpdir)
+            except AttributeError:
+                backup_files(self.site_name, self.site_path)
 
     def status(self):
         date = s3_latest_file_in_bucket(env.s3_bucket, self.site_name)
@@ -29,11 +32,10 @@ def backup_files(site_name, path, tmpdir='/tmp'):
             return
         else:
             print "  - Taring and gziping directory: %s => %s" % (path, tmpdir)
-            with hide('running', 'stdout'):
-                if file_exists('current'):
-                    run("tar czh current | gpg --encrypt --recipient %s > %s" %
-                        (env.gpg_key, local_file))
-                else:
-                    run("tar czh . | gpg --encrypt --recipient %s > %s" %
-                        (env.gpg_key, local_file))
+            if file_exists('current'):
+                run("tar czh current | gpg --encrypt --recipient %s > %s" %
+                    (env.gpg_key, local_file))
+            else:
+                run("tar czh . | gpg --encrypt --recipient %s > %s" %
+                    (env.gpg_key, local_file))
             s3_upload(local_file, s3_dest)
