@@ -16,6 +16,7 @@ setup(
     description='Utility to manage Web sites.',
     long_description=open('README.md').read(),
     install_requires=[
-        "Fabric >= 1.3.4",
+        "Fabric >=1.4.0",
+        "boto >=2.2.2",
     ],
 )

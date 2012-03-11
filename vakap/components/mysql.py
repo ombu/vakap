@@ -1,8 +1,7 @@
 from time import gmtime, strftime
-from fabric.decorators import task
-from fabric.api import settings, cd, hide, run, env
+from fabric.api import task, settings, cd, hide, run, env
 
-from base import Component, s3_upload, s3_file_exists
+from base import Component, s3_upload, s3_file_exists, s3_latest_file_in_bucket
 
 class MysqlComponent(Component):
     def __init__(self, site_name, raw_data):
@@ -11,6 +10,10 @@ class MysqlComponent(Component):
     def backup(self):
         with settings(host_string=self.host_string):
             backup_mysql(self.site_name, self.db_name, self.db_user)
+
+    def status(self):
+        date = s3_latest_file_in_bucket(env.s3_bucket, self.site_name)
+        print("%s last backed up: %s" % (self.__class__.__name__, date))
 
 @task
 def backup_mysql(site_name, dbname, dbuser):

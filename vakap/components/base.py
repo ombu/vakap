@@ -1,4 +1,4 @@
-from fabric.api import hide, run
+from fabric.api import hide, run, env
 
 class Component(object):
     """ Component Parent Class """
@@ -34,3 +34,23 @@ def s3_file_exists(s3_path):
 def s3_list(s3_path):
     # with hide('running', 'stdout'):
     return run("s3cmd ls %s" % s3_path)
+
+def s3_latest_file_in_bucket(bucket, prefix):
+    from boto.s3.connection import S3Connection
+    from datetime import datetime
+    import re
+    conn = S3Connection(env.s3_access_key, env.s3_secret)
+    keys = []
+    l = conn.get_bucket(bucket).list(prefix)
+    for i in l:
+        m = re.search(r"\d{4}\.\d{2}\.\d{2}", i.key)
+        if(m):
+            keys.append({
+                'date':  datetime.strptime(m.group(0), "%Y.%m.%d"),
+                'key':  i.key,
+            })
+    keys = sorted(keys, key=lambda k: k['date'])
+    if(len(keys)):
+        return keys.pop()['date']
+    else:
+        return "Never?"
