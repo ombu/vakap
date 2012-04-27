@@ -7,6 +7,7 @@ from components.base import Component
 import pprint
 import ssh
 
+
 # https://github.com/fabric/fabric/issues/312
 ssh.io_sleep = 0.1
 
@@ -27,17 +28,34 @@ def main():
     parser = OptionParser(description=desc, usage=usage)
     parser.add_option("-s", "--settings", dest="settings",
             help="Hosts manifest JSON file [default: %default]",
-            default="settings.json")
+            default="./settings.json")
     parser.add_option("-i", "--include", dest="include",
             help="Comma-separated list of sites to process [default: all sites]")
     parser.add_option("-x", "--exclude", dest="exclude",
             help="Comma-separated list of sites to exclude")
+    parser.add_option("-v", "--verbose", action="store_true", dest="verbose",
+            default=False, help="Verbose output")
 
     (options, args) = parser.parse_args()
     if len(args) == 0:
         print "No command supplied"
-        print "Available commands: list, backup"
+        print "Available commands: list, status, backup"
         sys.exit(0)
+
+    import fabric.state
+
+    fabric.state.output['status'] = False
+    fabric.state.output['aborts'] = True
+    fabric.state.output['warnings'] = True
+    fabric.state.output['running'] = False
+    fabric.state.output['stdout'] = False
+    fabric.state.output['stderr'] = True
+    fabric.state.output['user'] = True
+
+    if options.verbose:
+        fabric.state.output['status'] = True
+        fabric.state.output['running'] = True
+        fabric.state.output['stdout'] = True
 
     sites = parse_settings(options)
 
