@@ -26,9 +26,8 @@ risk. If you find it useful, I'd love to hear about it, and get feedback.
 
 ### Planned
 
-- Rotate backups (e.g. delete older files from S3).
-- Run maintenance scripts on sites.
-- Report site metadata, such as currenly deployed VCS revision.
+There's a milestone in the bugtracker for [Planned & Proposed
+Components](https://github.com/ombu/vakap/issues?milestone=3)
 
 ## Components
 
