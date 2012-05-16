@@ -20,19 +20,16 @@ class Component(object):
 def s3_upload(src, dst):
     """ Upload a path to S3 """
     print "  - Uploading: %s" % dst
-    with hide('running', 'stdout'):
-        try:
-            run("s3cmd --acl-public --human-readable-sizes put %s %s" % (src, dst))
-        finally:
-            run('rm %s' % src)
+    try:
+        run("s3cmd --acl-public --human-readable-sizes put %s %s" % (src, dst))
+    finally:
+        run('rm %s' % src)
 
 def s3_file_exists(s3_path):
     """ Whether a file exists on S3 """
-    with hide('running', 'stdout'):
-        return bool(s3_path in run("s3cmd ls %s" % s3_path))
+    return bool(s3_path in run("s3cmd ls %s" % s3_path))
 
 def s3_list(s3_path):
-    # with hide('running', 'stdout'):
     return run("s3cmd ls %s" % s3_path)
 
 def s3_latest_file_in_bucket(bucket, prefix):

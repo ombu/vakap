@@ -26,9 +26,8 @@ def backup_mysql(site_name, dbname, dbuser):
         return
     else:
         print "  - Dumping and encrypting database: %s" % dbname
-        with hide('running', 'stdout'):
-            run("""mysqldump -u {dbuser} --add-drop-table {dbname} \
-                | gzip | gpg --encrypt --recipient {key} > {local_file}"""
-                .format(dbuser=dbuser, dbname=dbname, key=env.gpg_key,
-                    local_file=local_file))
+        run("""mysqldump -u {dbuser} --add-drop-table {dbname} \
+            | gzip | gpg --encrypt --recipient {key} > {local_file}"""
+            .format(dbuser=dbuser, dbname=dbname, key=env.gpg_key,
+                local_file=local_file))
         s3_upload(local_file, s3_dest)

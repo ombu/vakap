@@ -30,7 +30,6 @@ def backup_files(site_name, path):
     from time import gmtime, strftime
     s3_dest = _get_dest(env.s3_bucket, site_name)
     print "  - Running Duplicity on directory: %s" % path
-    #with hide('running', 'stdout'):
     run("AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s duplicity \
             -v2 --volsize=256 --asynchronous-upload \
             --exclude %s/logs \
