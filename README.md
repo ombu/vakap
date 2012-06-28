@@ -44,15 +44,15 @@ Backup a MySQL database. Arguments:
   the host to run `mysqldump` on this database without requiring a password.
 
 ### PostgresComponent
-Same functionality as MysqlComponent for PostgreSQL databases.
+Same options as MysqlComponent.
 
 ### TgzComponent
-Tar & gzip a directory (follow symlinks). Arguments:
+Tar & gzip a directory (follows symlinks). Arguments:
 
 - `db_name`: The database name
 
 ### DuplicityComponent
-Same functionality as MysqlComponent for PostgreSQL databases.
+Same options as TgzComponent.
 
 ## Dependencies
 - Client: Python and [Fabric](http://docs.fabfile.org)
