@@ -8,14 +8,15 @@ structured to allow any operation on a site, such as a log rotation.
 **Warning:** This is a work in progress, subject to major refactoring. Use at your own
 risk. If you find it useful, I'd love to hear about it, and get feedback.
 
-
-## What it does
+What it does
+------------
 
 - Allows to run a command on a list of sites (e.g. back them up).
 - Stores backups in Amazon S3.
 - Encrypts files client-side with `gnupg` before sending to S3.
 
-## Commands
+Commands
+--------
 
 ### Implemented
 
@@ -29,7 +30,8 @@ risk. If you find it useful, I'd love to hear about it, and get feedback.
 There's a milestone in the bugtracker for [Planned & Proposed
 Components](https://github.com/ombu/vakap/issues?milestone=3)
 
-## Components
+Components
+----------
 
 ### General
 All commands require the following arguments:
@@ -54,19 +56,33 @@ Tar & gzip a directory (follows symlinks). Arguments:
 ### DuplicityComponent
 Same options as TgzComponent.
 
-## Dependencies
+Dependencies
+------------
+
 - Client: Python and [Fabric](http://docs.fabfile.org)
 - Hosts: `s3cmd`, `gnupg` with a [trusted public
   key](http://www.gnupg.org/gph/en/manual.html#AEN346) for encryption
 
-## Setup
+Setup
+-----
+
 - Provide a settings file (vakap will look for settings.json). See
   `settings.sample.json` for an exmaple .
 - Site hosts must have [s3cmd](http://s3tools.org/s3cmd) installed and
   configured.
 - Site hosts must have the gpg public key in their keyring
 
-## License
+Build
+-----
+
+To build the egg:
+
+    python setup.py sdist
+
+More info at: <http://docs.python.org/distutils>
+
+License
+-------
 
 Copyright (c) 2012, OMBU Inc. http://ombuweb.com
 All rights reserved.
