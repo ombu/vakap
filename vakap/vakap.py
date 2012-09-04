@@ -4,7 +4,6 @@ import json
 from optparse import OptionParser
 from fabric.api import env
 from components.base import Component
-import pprint
 import ssh
 
 
@@ -77,11 +76,10 @@ def parse_settings(options):
     f = open('./' + options.settings)
     try:
         config = json.load(f)
-        env.key_filename = config['settings']['default_ssh_key']
         env.gpg_key = config['settings']['gpg_key']
         env.s3_bucket = config['settings']['s3_bucket']
-        env.s3_access_key = config['settings']['s3_access_key']
-        env.s3_secret = config['settings']['s3_secret']
+        env.s3_access_key = os.environ['VAKAP_S3_ACCESS_KEY']
+        env.s3_secret = os.environ['VAKAP_S3_SECRET']
 
         # include and exclude options
         if options.include:
