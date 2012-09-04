@@ -1,17 +1,17 @@
 vakap
 =====
 
-I built *vakap* to help manage the sites hosted by OMBU. It's meant for managing
-sites, not servers. The original scope was to handle backups, but it's
-structured to allow any operation on a site, such as a log rotation.
+*vakap* is a site manager, originally intended to automate backups of sites
+hosted by OMBU.  However, it's architecture allows any operation on sites, such
+as executing maintenance scripts, rotating logs etc.
 
-**Warning:** This is a work in progress, subject to major refactoring. Use at your own
-risk. If you find it useful, I'd love to hear about it, and get feedback.
+This is currently a work in progress so if you use it, do so at your own risk.
+If you find it useful, I'd love to hear your feedback.
 
 What it does
 ------------
 
-- Allows to run a command on a list of sites (e.g. back them up).
+- Allows running a command on a list of sites, such as backing them up.
 - Stores backups in Amazon S3.
 - Encrypts files client-side with `gnupg` before sending to S3.
 
@@ -20,10 +20,9 @@ Commands
 
 ### Implemented
 
-- `list`: List managed sites.
-- `backup`: Backup sites.
-- `status`: When appropriate, reports date of componenet execution. For example,
-  the last backup date.
+- `list`: Lists managed sites
+- `backup`: Backs-up sites
+- `status`: Report on a site, such as when it was last backed-up
 
 ### Planned
 
