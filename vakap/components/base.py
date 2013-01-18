@@ -21,7 +21,7 @@ def s3_upload(src, dst):
     """ Upload a path to S3 """
     print "  - Uploading: %s" % dst
     try:
-        run("s3cmd --acl-public --human-readable-sizes put %s %s" % (src, dst))
+        run("s3cmd --no-progress --acl-public --human-readable-sizes put %s %s" % (src, dst))
     finally:
         run('rm %s' % src)
 
