@@ -4,11 +4,7 @@ import json
 from optparse import OptionParser
 from fabric.api import env
 from components.base import Component
-import ssh
 
-
-# https://github.com/fabric/fabric/issues/312
-ssh.io_sleep = 0.1
 
 class GlobalCommand(object):
     """ Global Commands """
@@ -20,6 +16,7 @@ class GlobalCommand(object):
             for component in site["components"]:
                 print " - %s" % component["type"]
         sys.exit(0)
+
 
 def main():
     usage = "usage: %prog command"
@@ -71,6 +68,7 @@ def main():
             for command in args:
                 try: getattr(c, command)()
                 except AttributeError: pass
+
 
 def parse_settings(options):
     f = open('./' + options.settings)
