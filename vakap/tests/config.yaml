@@ -1,0 +1,142 @@
+settings:
+    gpg_key: A01D2B0D
+    s3_bucket: vakap_tests.ombuweb.com
+sites:
+- name: foo
+  components:
+      - type: TgzComponent
+        host_string: axolx@localhost
+        site_path:  /Volumes/bluedat/sandbox/envs/vakap/vakap/tests/sites/foo
+- name: bar
+  components:
+      - type: TgzComponent
+        host_string: axolx@localhost
+        site_path:  /Volumes/bluedat/sandbox/envs/vakap/vakap/tests/sites/bar
+
+#  - { host_string:  ombu@chacho:34165
+#  site_path:  /mnt/main/futureforwardmba.com
+#
+#     type:  DuplicityComponent}
+#-  components:
+#  - { db_name:  evosus
+#  db_user:  backup
+#
+#     host_string:  ombu@chacho:34165
+#  type:  MysqlComponent}
+#  - { host_string:  ombu@chacho:34165
+#  site_path:  /mnt/main/evosus.com
+#
+#     type:  DuplicityComponent}
+#   name:  evosus
+#-  components:
+#  - { db_name:  bluecollar_wp
+#  db_user:  backup
+#
+#     host_string:  ombu@chacho:34165
+#  type:  MysqlComponent}
+#  - { host_string:  ombu@chacho:34165
+#  site_path:  /mnt/main/bluecollar
+#
+#     type:  DuplicityComponent}
+#   name:  bluecollar-site
+#-  components:
+#  - { host_string:  ombu@pinche:34165
+#  site_path:  /mnt/main/cclc
+#
+#     type:  DuplicityComponent}
+#  - { db_name:  cclc
+#  db_user:  cclc_user
+#
+#     host_string:  webuser@db2:34165
+#  type:  PostgresComponent}
+#   name:  cclc
+#-  components:
+#  - { host_string:  ombu@pinche:34165
+#  site_path:  /mnt/main/m.cclc
+#
+#     type:  DuplicityComponent}
+#   name:  m.cclc
+#-  components:
+#  - { db_name:  sfcv
+#  db_user:  backup
+#
+#     host_string:  ombu@tito:34165
+#  type:  MysqlComponent}
+#  - { host_string:  ombu@tito:34165
+#  site_path:  /mnt/sfcv
+#
+#     type:  DuplicityComponent}
+#   name:  sfcv
+#-  components:
+#  - { host_string:  ombu@shared1
+#  site_path:  /home/ombu/webapps/bubot
+#
+#     type:  TgzComponent}
+#   name:  bubot
+#-  components:
+#  - { db_name:  tickets
+#  db_user:  backup
+#
+#     host_string:  ombu@tickets:34165
+#  type:  MysqlComponent}
+#  - { host_string:  ombu@tickets:34165
+#  site_path:  /home/ombu/redmine-uploads
+#
+#     type:  DuplicityComponent}
+#   name:  tickets
+#-  components:
+#  - { db_name:  nikecms
+#  db_user:  backup
+#
+#     host_string:  ombu@beto:34165
+#  type:  MysqlComponent}
+#  - { host_string:  ombu@beto:34165
+#  site_path:  /mnt/main/hpcms
+#
+#     type:  DuplicityComponent}
+#   name:  hpcms
+#-  components:
+#  - { db_name:  va
+#  db_user:  backup
+#
+#     host_string:  ombu@50.18.106.115:34165
+#  type:  MysqlComponent}
+#  - { host_string:  ombu@50.18.106.115:34165
+#
+#     site_path:  /home/ombu/va
+#  type:  DuplicityComponent}
+#   name:  va
+#-  components:
+#  - { db_name:  forum
+#  db_user:  backup
+#
+#     host_string:  ombu@forum.verificationacademy.com:34165
+#
+#     type:  MysqlComponent}
+#  - { host_string:  ombu@forum.verificationacademy.com:34165
+#
+#     site_path:  /home/ombu/forum
+#  type:  DuplicityComponent}
+#   name:  va-forum
+#-  components:
+#  - { db_name:  appup_stage
+#  db_user:  backup
+#
+#     host_string:  ombu@d2:34165
+#  type:  MysqlComponent}
+#  - { host_string:  ombu@d2:34165
+#  site_path:  /mnt/main/stage/stage3
+#
+#     type:  DuplicityComponent}
+#   name:  appup-stage
+#-  components:
+#  - { db_name:  amaa_stage
+#  db_user:  backup
+#
+#     host_string:  ombu@d2:34165
+#  type:  MysqlComponent}
+#  - { host_string:  ombu@d2:34165
+#  site_path:  /mnt/main/stage/stage4
+#
+#     type:  DuplicityComponent}
+#   name:  amaa-stage

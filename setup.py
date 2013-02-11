@@ -22,5 +22,6 @@ setup(
     install_requires=[
         "Fabric >=1.5.0",
         "boto >=2.7.0",
+        "pyaml >=3.0.0",
     ],
 )
