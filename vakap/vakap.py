@@ -57,20 +57,15 @@ def run(options, args):
         print "Available commands: list, status, backup"
         sys.exit(0)
 
+    # Verbosity
     import fabric.state
-
-    fabric.state.output['status'] = False
-    fabric.state.output['aborts'] = True
-    fabric.state.output['warnings'] = True
-    fabric.state.output['running'] = False
-    fabric.state.output['stdout'] = False
-    fabric.state.output['stderr'] = True
-    fabric.state.output['user'] = True
-
-    if hasattr(options, 'verbose'):
-        fabric.state.output['status'] = True
-        fabric.state.output['running'] = True
-        fabric.state.output['stdout'] = True
+    for prop in ['status', 'running', 'stdout']:
+        if hasattr(options, 'verbose') and options.verbose:
+            fabric.state.output[prop] = True
+        else:
+            fabric.state.output[prop] = False
+    for prop in ['aborts', 'warnings', 'stderr', 'user']:
+        fabric.state.output[prop] = True
 
     sites = parse_config(options)
 
@@ -94,6 +89,10 @@ def run(options, args):
 
 
 def parse_config(options):
+    """
+    Parses configuration: Updates fabric.env settings as needed and returns a
+    list of sites.
+    """
     f = open(options.config, 'r')
     try:
         config = yaml.load(f)
@@ -102,12 +101,12 @@ def parse_config(options):
         env.s3_access_key = os.environ['VAKAP_S3_ACCESS_KEY']
         env.s3_secret = os.environ['VAKAP_S3_SECRET']
 
-        # include and exclude options
-        if hasattr(options, 'include'):
+        # Handle --include/--exclude options
+        if hasattr(options, 'include') and options.include:
             include_sites = [x.strip() for x in options.include.split(',')]
             return filter(
                 lambda x: x['name'] in include_sites, config['sites'])
-        elif hasattr(options, 'exclude'):
+        elif hasattr(options, 'exclude') and options.exclude:
             exclude_sites = [x.strip() for x in options.exclude.split(',')]
             return filter(
                 lambda x: x['name'] not in exclude_sites, config['sites'])
@@ -117,4 +116,4 @@ def parse_config(options):
         f.close()
 
 if __name__ == '__main__':
-   main()
+    main()
