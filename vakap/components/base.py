@@ -13,6 +13,7 @@ class Component(object):
         from tgz import TgzComponent
         from postgres import PostgresComponent
         from duplicity import DuplicityComponent
+        from s3sync import S3SyncComponent
         return eval(component["type"])(site_name, component)
 
 """ Base Utilities """
