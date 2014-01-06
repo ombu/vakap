@@ -1,5 +1,9 @@
 from fabric.api import hide, run, env
 
+# Fabric global settings
+env.forward_agent = True
+env.use_ssh_config = True
+
 class Component(object):
     """ Component Parent Class """
     def __init__(self, site_name, raw_data):
