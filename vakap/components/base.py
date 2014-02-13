@@ -5,22 +5,11 @@ env.forward_agent = True
 env.use_ssh_config = True
 
 
-class Component(object):
+class BaseComponent(object):
     """ Component Parent Class """
     def __init__(self, site_name, raw_data):
         self.site_name = site_name
-        self.raw_data = raw_data
-        self.__dict__.update(raw_data)
-
-    @staticmethod
-    def factory(site_name, component):
-        # TODO: Find a better way to load components dynamically
-        from mysql import MysqlComponent
-        from tgz import TgzComponent
-        from postgres import PostgresComponent
-        from duplicity import DuplicityComponent
-        from s3sync import S3SyncComponent
-        return eval(component["type"])(site_name, component)
+        self.host_string = raw_data['host_string']
 
 
 # Base Utilities

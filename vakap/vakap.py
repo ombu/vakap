@@ -3,7 +3,6 @@ import sys
 import json
 from optparse import OptionParser
 from fabric.api import env
-from components.base import Component
 
 
 class GlobalCommand(object):
@@ -76,12 +75,18 @@ def main():
     for site in sites:
         print '+ Processing site %s' % site["name"]
         for component in site["components"]:
-            c = Component.factory(site["name"], component)
-            for command in args:
-                try:
-                    getattr(c, command)()
-                except AttributeError:
-                    pass
+            import importlib
+            try:
+                module = importlib.import_module(component['type'])
+                c = module.Component(site["name"], component)
+                for command in args:
+                    try:
+                        getattr(c, command)()
+                    except AttributeError:
+                        pass
+            except ImportError:
+                print " - Error. Unable to load component: %s. Skipping." % \
+                      component['type']
 
 
 def parse_settings(options):

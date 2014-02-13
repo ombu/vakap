@@ -1,12 +1,20 @@
 from time import gmtime, strftime
 from fabric.decorators import task
 from fabric.api import settings, run, env
-from base import Component, s3_upload, s3_file_exists, s3_latest_file_in_bucket
+from base import BaseComponent, s3_upload, s3_file_exists, \
+    s3_latest_file_in_bucket
 
 
-class PostgresComponent(Component):
+class Component(BaseComponent):
+
     def __init__(self, site_name, raw_data):
-        super(PostgresComponent, self).__init__(site_name, raw_data)
+        super(Component, self).__init__(site_name, raw_data)
+        try:
+            self.db_name = raw_data['db_name']
+            self.db_user = raw_data['db_user']
+        except KeyError:
+            print "- Error. The component %s requires `db_name` and " \
+                  "`db_user` parameters. Skipping." % __name__
 
     def backup(self):
         with settings(host_string=self.host_string):
@@ -18,18 +26,19 @@ class PostgresComponent(Component):
 
 
 @task
-def backup_postgres(site_name, dbname, dbuser):
+def backup_postgres(site_name, db_name, db_user):
     date = strftime("%Y.%m.%d", gmtime())
     gpg_file = 'sql-%s.sql.gz.gpg' % date
     local_file = "%s/vakap-%s" % ('/tmp', gpg_file)
-    s3_dest = "s3://%s/%s/%s" % (env.s3_bucket, site_name, gpg_file)
-    if s3_file_exists(s3_dest):
-        print "  - File exists: %s. Skipping." % s3_dest
+    s3_path = "s3://%s/%s/%s" % (env.s3_bucket, site_name, gpg_file)
+    if s3_file_exists(s3_path):
+        print "  - File exists: %s. Skipping." % s3_path
         return
     else:
-        print "  - Dumping and encrypting database: %s" % dbname
-        run("""pg_dump --host=127.0.0.1 --clean --username={dbuser} {dbname} \
+        print "  - Dumping and encrypting database: %s" % db_name
+        run("""pg_dump --host=127.0.0.1 --clean --username={db_user} {
+        db_name} \
             | gzip | gpg --encrypt --recipient {key} > {local_file}"""
-            .format(dbuser=dbuser, dbname=dbname, key=env.gpg_key,
+            .format(db_user=db_user, db_name=db_name, key=env.gpg_key,
                     local_file=local_file))
-        s3_upload(local_file, s3_dest)
+        s3_upload(local_file, s3_path)
