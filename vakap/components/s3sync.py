@@ -1,6 +1,5 @@
 from fabric.decorators import task
 from fabric.api import settings, run
-
 from base import Component
 
 

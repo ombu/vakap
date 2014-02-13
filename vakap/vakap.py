@@ -22,15 +22,25 @@ def main():
     usage = "usage: %prog command"
     desc = "Run a command on a set of hosts"
     parser = OptionParser(description=desc, usage=usage)
-    parser.add_option("-s", "--settings", dest="settings",
-            help="Hosts manifest JSON file [default: %default]",
-            default="./settings.json")
-    parser.add_option("-i", "--include", dest="include",
-            help="Comma-separated list of sites to process [default: all sites]")
-    parser.add_option("-x", "--exclude", dest="exclude",
-            help="Comma-separated list of sites to exclude")
-    parser.add_option("-v", "--verbose", action="store_true", dest="verbose",
-            default=False, help="Verbose output")
+    parser.add_option(
+        "-s", "--settings",
+        dest="settings",
+        help="Hosts manifest JSON file [default: %default]",
+        default="./settings.json")
+    parser.add_option(
+        "-i", "--include",
+        dest="include",
+        help="Comma-separated list of sites to process [default: all sites]")
+    parser.add_option(
+        "-x", "--exclude",
+        dest="exclude",
+        help="Comma-separated list of sites to exclude")
+    parser.add_option(
+        "-v", "--verbose",
+        action="store_true",
+        dest="verbose",
+        default=False,
+        help="Verbose output")
 
     (options, args) = parser.parse_args()
     if len(args) == 0:
@@ -55,10 +65,12 @@ def main():
 
     sites = parse_settings(options)
 
-    # Try to run the command globablly
+    # Try to run the command globally
     for command in args:
-        try: getattr(GlobalCommand, command)(sites)
-        except AttributeError: pass
+        try:
+            getattr(GlobalCommand, command)(sites)
+        except AttributeError:
+            pass
 
     # Try to run the command on site components
     for site in sites:
@@ -66,8 +78,10 @@ def main():
         for component in site["components"]:
             c = Component.factory(site["name"], component)
             for command in args:
-                try: getattr(c, command)()
-                except AttributeError: pass
+                try:
+                    getattr(c, command)()
+                except AttributeError:
+                    pass
 
 
 def parse_settings(options):
@@ -82,10 +96,12 @@ def parse_settings(options):
         # include and exclude options
         if options.include:
             include_sites = [x.strip() for x in options.include.split(',')]
-            hosts = filter(lambda x: x['name'] in include_sites, config['hosts'])
+            hosts = filter(
+                lambda l: l['name'] in include_sites, config['hosts'])
         elif options.exclude:
             exclude_sites = [x.strip() for x in options.exclude.split(',')]
-            hosts = filter(lambda x: x['name'] not in exclude_sites, config['hosts'])
+            hosts = filter(
+                lambda l: l['name'] not in exclude_sites, config['hosts'])
         else:
             hosts = config['hosts']
         return hosts

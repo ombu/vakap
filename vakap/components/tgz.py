@@ -1,12 +1,12 @@
 from fabric.decorators import task
-from fabric.api import settings, cd, hide, run, env
+from fabric.api import settings, cd, run, env
 from fabric.contrib.files import exists as file_exists
-
 from base import Component, s3_upload, s3_file_exists, s3_latest_file_in_bucket
+
 
 class TgzComponent(Component):
     def __init__(self, site_name, raw_data):
-        super(type(self), self).__init__(site_name, raw_data)
+        super(TgzComponent, self).__init__(site_name, raw_data)
 
     def backup(self):
         with settings(host_string=self.host_string):
@@ -18,6 +18,7 @@ class TgzComponent(Component):
     def status(self):
         date = s3_latest_file_in_bucket(env.s3_bucket, self.site_name)
         print("%s last backed up: %s" % (self.__class__.__name__, date))
+
 
 @task
 def backup_files(site_name, path, tmpdir='/tmp'):
