@@ -36,9 +36,8 @@ def backup_postgres(site_name, db_name, db_user):
         return
     else:
         print "  - Dumping and encrypting database: %s" % db_name
-        run("""pg_dump --host=127.0.0.1 --clean --username={db_user} {
-        db_name} \
-            | gzip | gpg --encrypt --recipient {key} > {local_file}"""
+        run("pg_dump --host=127.0.0.1 --clean --username={db_user} "
+            "{db_name} | gzip | gpg --encrypt --recipient {key} > {local_file}"
             .format(db_user=db_user, db_name=db_name, key=env.gpg_key,
                     local_file=local_file))
         s3_upload(local_file, s3_path)

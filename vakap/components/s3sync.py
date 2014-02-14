@@ -9,7 +9,7 @@ class Component(BaseComponent):
     def __init__(self, site_name, raw_data):
         super(Component, self).__init__(site_name, raw_data)
         try:
-            self.site_path = raw_data['db_name']
+            self.site_path = raw_data['site_path']
         except KeyError:
             print "- Error. The component %s requires `site_path` parameter." \
                   " Skipping." % __name__
